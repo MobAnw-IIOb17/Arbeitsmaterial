@@ -1,0 +1,20 @@
+Mitarbeiter:
+http://dev.inform-objektservice.de/hmdinterface/rest/employee/
+
+Objekte:
+
+http://dev.inform-objektservice.de/hmdinterface/rest/object/
+
+Objekt über ID
+
+http://dev.inform-objektservice.de/hmdinterface/rest/object/{id}/
+
+Objekte nach Orten
+
+http://dev.inform-objektservice.de/hmdinterface/rest/{city}/
+
+------------------------------------------------------------------
+
+Schadensmeldung an Webservice senden
+
+http://dev.inform-objektservice.de/hmdinterface/rest/damage/
