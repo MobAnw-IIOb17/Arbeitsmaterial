@@ -1,0 +1,1 @@
+- Möglichkeit, Objekte nicht nur nach Städtenamen, sondern auch nach PLZ zu suchen
