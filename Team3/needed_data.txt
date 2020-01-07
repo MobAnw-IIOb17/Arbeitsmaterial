@@ -1,0 +1,62 @@
+
+Für die Template:
+
+{
+    "object_uid": "1",
+    "update": "timestamp des letzten Updates",
+    "checklist": [
+        "Dachboden": [
+            "sauber",
+            "Kammer",
+            "..."
+        ]
+    ]
+}
+
+
+Für abzuschickenden Daten:
+
+{
+    "object_uid": "1",
+    "crdate": "",
+    "tstamp": "",
+    "sent_on": "",
+    "employee_uid": "",
+    "update": "",
+    "checklist": [
+        {
+            "name": "Dachboden",
+            "items": [
+                {
+                    "name": "sauber",
+                    "is_ok": true/false,
+                    "description": "TEXT",
+                    "images": ["base64 image","base64 image"]
+                },
+                {
+                    "name": "Kammer",
+                    "is_ok": true/false,
+                    "description": "TEXT",
+                    "images": ["base64 image","base64 image"]
+                }
+            ]
+        },
+        {
+            "name": "Garten",
+            "items": [
+                {
+                    "name": "sauber",
+                    "is_ok": true/false,
+                    "description": "TEXT",
+                    "images": ["base64 image","base64 image"]
+                },
+                {
+                    "name": "Mängel",
+                    "is_ok": true/false,
+                    "description": "TEXT",
+                    "images": ["base64 image","base64 image"]
+                }
+            ]
+        }
+    ]
+}
