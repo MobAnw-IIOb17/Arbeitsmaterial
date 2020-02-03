@@ -17,6 +17,8 @@
 	- Login dient der Identifizierung, ist die Festlegung, welcher der Mitarbeiter aus der Datenbank das Gerät besitzt, wird dann automatisch mit jeder Schadensmeldung eingetragen
 	- Einstellung sind Servereinstellungen
 	- diese Einstellungen sind passwortgeschützt, damit nur der Admin darauf zugreifen kann
+	- zusätzliche Einstellung: darf Objektkontrolle oder darf nicht
+	- GUI fürs Einstellungsmenü soll von uns erstellt werden
 - Webserviceschnittstelle implementieren zur Versendung von Schadensmeldungen und der Objektkontrolle
 	- wird nur angestoßen, wenn Internetverbindung da, ansonsten zwischenspeichern
 
