@@ -50,10 +50,21 @@
 \newpage
 
 \begin{abstract}
-generelles Gelaber zum Projekt
+Im Folgenden geht es um die Implementierung einer Hausmeister-App, von uns FacilityManager getauft, mit der Schadensmeldungen verfasst und abgeschickt, Objektkontrollen anhand von Checklisten durchgeführt und dokumentiert und Informationen über Objekte abgerufen werden können.
+\paragraph{Fachlicher Aspekt}
+Zu dieser App existierte anfangs bereits ein Prototyp, neu ist allerdings die Zusammenführung aller Funktionen in einer App und die Möglichkeit, Objektkontrollen mithilfe der App durchzuführen. Außerdem war vorgegeben, dass die neue Auflage der Hausmeister-App auch offline funktioniert, was durch eine interne Wrapper-Datenbank für die per RESTFul Webservice erreichbare bereits vorhandene Datenbank realisiert werden sollte. Mehr dazu in Abschnitt \ref{sec:aufg}.
+\paragraph{Technologie}
+Damit die App auf möglichst vielen Plattformen läuft, haben wir uns am Anfang des Projekts für die Umsetzung mit dem Ionic-Framework entschieden. Dieses ermöglichte uns ein Arbeiten auf hohem Abstraktionsniveau bei gleichzeitigem Handeln der Implementierung auf Android, iOS, als WebApp, Electronapp, etc.
+\paragraph{Organisation}
+Zu Beginn wurde das Projekt auf drei Arbeitsteams aufgeteilt, ein Team für das Backend, ein Team für den Schadensmeldungsteil der GUI und ein Team für den Objektkontrollenteil der GUI. Hier soll es um den Beitrag des ersten dieser Teams gehen.
 \end{abstract}
 
-\section{Aufgabenstellung}
+\section{Aufgabenstellung}\label{sec:aufg} 
+Unser Team hatte den Auftrag, sich die folgenden Teile der App zu kümmern:
+\paragraph{Das Backend} Eine Datenbankinfrastruktur, die den Zwischenlayer zwischen Webservice und der restlichen App bildet. Hierbei soll sichergestellt werden, dass regelmäßig die aktuellen Daten über Objekte, Mitarbeiter, Schadensmeldungen und Objektkontrollentemplates heruntergeladen werden und der App dann im Offline-Betrieb zur Verfügung stehen. Außerdem soll eine JSON-Schnittstelle bereitgestellt werden, die das Abfragen der lokal gespeicherten Daten erlaubt, ohne dabei direkt auf die per Webservice bereitgestellten Datenbanken zuzugreifen. Auch weitere interne Appdaten sollen nach Bedarf in der internen Datenbank gespeichert werden können, die entsprechende Datenanalyse war dann Aufgabe der anderen beiden Teams.
+\paragraph{Die Webserviceschnittstellen} Neben dem Bereitstellen von Daten aus den entsprechenden Webservices, war es auch Aufgabe, eine einheitliche Schnittstelle zur Sendung von Daten an die Webservices einzurichten. Bei Internetverbindung sollen ausstehende Schadensmeldungen und vollendete Objektkontrollen an die entsprechenden Services geschickt werden, ansonten werden auch diese in der internen Datenbankstruktur gespeichert.
+\paragraph{Die Authentisierung} Hier geht es darum, dass der Mitarbeiter, der eine Schadensmeldung oder abgeschlossene Objektkontrolle versenden möchte, authentifiziert werden kann. Dafür sollten wir eine Art Loginsystem mitsamt grafischer Oberfläche bauen, in das bei Erstkonfiguration der App der zuständige Administrator den Namen und optionale Berechtigungen des Angestellten eintragen kann. Zu diesen Berechtigungen zählt bis jetzt nur die Objektkontrolle, welche nur einige der Angestellten durchführen. Dieser Bereich soll außerdem passwortgeschützt sein, wobei es dabei weniger um hohe Sicherheitsanforderungen geht, als vielmehr um Prozessoptimierung, der Angestellte selbst soll sich um keine Konfiguration mehr kümmern müssen und können. Als Ergebnis dieser Einstellungen wird angegebene Name des Mitarbeiters bei jedem gesendeten Bericht automatisch eingetragen und die Funktion der Objektkontrolle wird entweder an- oder ausgeschaltet, was auch zu einer Anpassung der GUI führt.
+\paragraph{Der Anwendungsrahmen} Zusätzlich wurde unserem Team die Verantwortung übertragen, die Projektstruktur vorzugeben und sich um die Einrichtung der Versionsverwaltung zu kümmern.
 
 \section{Lokale Datenbankinfrastruktur}
 \subsection{Umsetzung}
