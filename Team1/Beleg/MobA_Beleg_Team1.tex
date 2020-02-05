@@ -12,19 +12,6 @@
 \usepackage{listings}
 \usepackage[hidelinks]{hyperref}
 
-\lstset{
-	language=Java,
-	basicstyle=\footnotesize\sffamily,
-	numbers=left,
-	numberstyle=\tiny,
-	tabsize=2,
-	columns=fixed,
-	showtabs=false,
-	keepspaces,
-	commentstyle=\color{gray},
-	keywordstyle=\color{blue}
-}
-
 \begin{document}
 
 \begin{titlepage}
@@ -62,7 +49,7 @@ Zu Beginn wurde das Projekt auf drei Arbeitsteams aufgeteilt, ein Team für das 
 \section{Aufgabenstellung}\label{sec:aufg} 
 Unser Team hatte den Auftrag, sich die folgenden Teile der App zu kümmern:
 \paragraph{Das Backend} Eine Datenbankinfrastruktur, die den Zwischenlayer zwischen Webservice und der restlichen App bildet. Hierbei soll sichergestellt werden, dass regelmäßig die aktuellen Daten über Objekte, Mitarbeiter, Schadensmeldungen und Objektkontrollentemplates heruntergeladen werden und der App dann im Offline-Betrieb zur Verfügung stehen. Außerdem soll eine JSON-Schnittstelle bereitgestellt werden, die das Abfragen der lokal gespeicherten Daten erlaubt, ohne dabei direkt auf die per Webservice bereitgestellten Datenbanken zuzugreifen. Auch weitere interne Appdaten sollen nach Bedarf in der internen Datenbank gespeichert werden können, die entsprechende Datenanalyse war dann Aufgabe der anderen beiden Teams.
-\paragraph{Die Webserviceschnittstellen} Neben dem Bereitstellen von Daten aus den entsprechenden Webservices, war es auch Aufgabe, eine einheitliche Schnittstelle zur Sendung von Daten an die Webservices einzurichten. Bei Internetverbindung sollen ausstehende Schadensmeldungen und vollendete Objektkontrollen an die entsprechenden Services geschickt werden, ansonten werden auch diese in der internen Datenbankstruktur gespeichert.
+\paragraph{Die Webserviceschnittstellen} Neben dem Bereitstellen von Daten aus den entsprechenden Webservice, war es auch Aufgabe, eine einheitliche Schnittstelle zur Sendung von Daten an die Webservice einzurichten. Bei Internetverbindung sollen ausstehende Schadensmeldungen und vollendete Objektkontrollen an die entsprechenden Services geschickt werden, ansonten werden auch diese in der internen Datenbankstruktur gespeichert.
 \paragraph{Die Authentisierung} Hier geht es darum, dass der Mitarbeiter, der eine Schadensmeldung oder abgeschlossene Objektkontrolle versenden möchte, authentifiziert werden kann. Dafür sollten wir eine Art Loginsystem mitsamt grafischer Oberfläche bauen, in das bei Erstkonfiguration der App der zuständige Administrator den Namen und optionale Berechtigungen des Angestellten eintragen kann. Zu diesen Berechtigungen zählt bis jetzt nur die Objektkontrolle, welche nur einige der Angestellten durchführen. Dieser Bereich soll außerdem passwortgeschützt sein, wobei es dabei weniger um hohe Sicherheitsanforderungen geht, als vielmehr um Prozessoptimierung, der Angestellte selbst soll sich um keine Konfiguration mehr kümmern müssen und können. Als Ergebnis dieser Einstellungen wird angegebene Name des Mitarbeiters bei jedem gesendeten Bericht automatisch eingetragen und die Funktion der Objektkontrolle wird entweder an- oder ausgeschaltet, was auch zu einer Anpassung der GUI führt.
 \paragraph{Der Anwendungsrahmen} Zusätzlich wurde unserem Team die Verantwortung übertragen, die Projektstruktur vorzugeben und sich um die Einrichtung der Versionsverwaltung zu kümmern.
 
@@ -71,10 +58,16 @@ Unser Team hatte den Auftrag, sich die folgenden Teile der App zu kümmern:
 \subsection{Schwierigkeiten}
 \subsection{Lösungen}
 
-\section{Kommunikation mit dem Webservice}
-\subsection{Umsetzung}
-\subsection{Schwierigkeiten}
-\subsection{Lösungen}
+\section{Kommunikation mit dem Webservice \& Offline-Funktion}
+Für die Datenflusskontrolle zwischen App und Datenbank des Kunden wurde uns ein Webservice mit insgesamt fünf Endpunkten zur Verfügung gestellt. Drei davon dienen der Abfrage von Daten. Dabei handelt es sich um Informationen zu Objekten, Informationen zu den Mitarbeitern und Templates für die Objektkontrollen. Mit den anderen beiden Endpunkten werden neue Schadensmeldungen und abgschlossene Objektkontrollen verschickt.\\
+Allerdings soll nur mit dem Webservice kommuniziert werden, wenn das Gerät auch wirklich online ist und wenn es überhaupt notwendig ist, die Daten zu synchronisieren. Hierzu wurde zuerst ein NetworkListener implementiert, was sich als schwieriger als gedacht herausstellte, dazu später mehr.\\
+Zu Anfang wurde bei jeder Abfrage einer Information diese direkt vom Webservice abgefragt und in aktualisierter Form in die interne Datenbank geschrieben. Um den zusätzlichen Zeitaufwand dieser Synchronisierung zu vermeiden, wird sie nun nur noch bei Start der App, wenn die App aus einem Offline- in einen Onlinezustand kommt und bei manuellem Synchronisierungsaufruf in der GUI durchgeführt. 
+
+\paragraph{}Um die verschiedenen Webserviceendpunkte dem Rest der App zur Verfügung zu stellen, wurden als Interface Angular-Services kreiert. Diese werden dann in jeder Klasse, die die Funktionalität nutzen möchte, injiziert, sodass es von jedem Service nur eine, global verfügbare Instanz gibt.\\
+Hierbei gibt es folgende Services: Der \texttt{DamageService}, mit dem neue Schadensmeldungen verschickt werden können, der \texttt{EmployeeService}, mit dem Informationen zu einem gegebenen Mitarbeiter sowie eine Liste aller Mitarbeiter abgefragt werden können, der \texttt{ObjectChecklistService}, mit dem sowohl Templates für Objektkontrollen abgerufen als auch fertiggestellte Objektkontrollen abgeschickt werden können und der \texttt{PropertyService}, mit dem einzelne Objekte mit ID abgefragt sowie Listen von Objekten nach Stadt oder eine Gesamtliste aller Objekte zurückgegeben werden kann.
+
+\paragraph{}
+Zur Verwaltung der Onlinefunktionalität der App gibt es außerdem den \texttt{NetworkSendService}, der auf Anfrage von allen Services die Synchronisationsfunktionen zum Abschicken ausstehender Meldungen und Herunterladen der aktuellen Daten vom Webservice ausführt, und den \texttt{NetworkQueryService}, der auf Anfrage den Onlinestatus der App zurückgibt. Usprünglich sollte der \texttt{Networklistener} auch in den \texttt{NetworkSendService} integriert werden, leider bietet Angular aber keine Möglichkeit, einen Hostlistener in einen Service einzubinden. Dafür wird eine Directive benötigt, die dann in jede der GUI-Komponenten eingebunden werden kann, sodass, egal auf welcher Appseite der User sich befindet, das Onlineevent erkannt wird. Damit diese \texttt{NetworkListenerDirective} auch in allen Teilen der App verfügbar ist, wird diese im \texttt{CommonModule} zur Verfügung gestellt. Mit Import dieses im \texttt{module.ts}-Teil einer Appkomponente kann sie dann in den \texttt{ionic-body}-Tag der entsprechenden HTML-Seite eingebunden werden.
 
 \section{Objektexplorer}
 \subsection{Umsetzung}
@@ -82,11 +75,6 @@ Unser Team hatte den Auftrag, sich die folgenden Teile der App zu kümmern:
 \subsection{Lösungen}
 
 \section{Nutzerverwaltung}
-\subsection{Umsetzung}
-\subsection{Schwierigkeiten}
-\subsection{Lösungen}
-
-\section{Dokumentation und Code-Cleanup}
 \subsection{Umsetzung}
 \subsection{Schwierigkeiten}
 \subsection{Lösungen}
