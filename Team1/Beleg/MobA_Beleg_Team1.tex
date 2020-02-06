@@ -91,6 +91,11 @@ Die Verwaltung der Onlinefunktionalität der App wurde mit folgenden Komponenten
 \section{Objektexplorer}
 Der Objektexplorer dient, dazu Informationen und Kontaktdaten der Handwerker/Dienstleister von einem Objekt bereitzustellen, damit soll eine schnelle Möglichkeit für die Hausmeister geschaffen werden die Kontaktdaten der Handwerker zu finden.
 
+\begin{wrapfigure}{r}{6cm}
+	\includegraphics[width=6cm]{Bilder/object-explorer-2.jpg}
+	\caption{Objektexplorer Detailansicht}
+	\vspace{-0.75cm}
+\end{wrapfigure}
 \paragraph{}Im Tab \textit{Objekte} werden alle Objekte mit ihrer Anschrift aufgelistet und können über ein Suchfeld gefiltert werden. Wenn ein Objekt ausgewählt wird stehen die folgenden Daten über die eingetragenen Handwerker/Dienstleister zur Verfügung: Name, Anschrift, Telefonnummer, Mobilfunknummer und E-Mail-Adresse. Diese Informationen stehen nicht immer zur Verfügung. Im Moment sind folgende Handwerker/Dienstleister implementiert: Verwalter, Elektriker, Heizungsmonteur, Installateur, Schlüsseldienst, Schornsteinfeger, Brandschutz, Rohrreinigungsfirma und Fahrstuhl. Ebenfalls werden die Inhaberinformationen angezeigt.
 
 \paragraph{}Zuerst Stand für den Abruf der Handwerker/Dienstleister nur ein Endpunkt am Webservice zur Verfügung, über welchen die Daten nur zu einem Objekt abgefragt werden konnten. Weil deshalb für jedes Objekt eine extra Anfrage an den Webservice nötig war hat sich das Abholen der Daten für die Offline-Arbeit sehr aufgebläht. Teilweise hat sich die Abarbeitung dieser Anfragen über mehrere Minuten hingezogen.
