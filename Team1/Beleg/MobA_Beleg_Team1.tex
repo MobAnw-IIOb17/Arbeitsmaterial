@@ -88,7 +88,11 @@ Zuerst Stand für den Abruf der Handwerker/Dienstleister nur ein Endpunkt am Web
 Die beste Lösung war ein neuer Webservice-Endpunkt, welcher es ermöglicht, dass die Daten aller Objekte mit einer einzigen Abfrage abgefragt werden können. Bis dieser Webservice fertiggestellt war haben wir die Daten für den Objektexplorer live abgefragt, wenn die benötigt wurden. Währenddessen war dieser Teil der App, also nicht Offlinefähig.
 
 \section{Nutzerverwaltung}
-Auf dem Gerät muss ein Nutzer ausgewählt werden, welcher dann als Absender der Objektkontrollen oder Schadensmeldungen übermittelt wird.
+Auf dem Gerät muss ein Nutzer ausgewählt werden, welcher dann als Absender der Objektkontrollen oder Schadensmeldungen übermittelt wird. Es soll dem Nutzer aber nicht möglich sein im Namen eines anderen zu Arbeiten, außerdem soll die Objektkontrolle nur bestimmten Nutzern vorbehalten sein.
+
+Da der Webservice im Moment keine Authentifiziert ermöglicht, wurde ein Konzept umgesetzt bei dem die Person, welche die Geräte der Hausmeister betreut und verwaltet, Zugangsdaten für einen gesicherten Administrationsbereich bekommt und dort diese Einstellungen vornehmen kann. Dies stellt zwar, wie oben genannt sicher, dass der Nutzer selbst nicht den Absender wechseln kann, heißt aber auch, dass immer der Geräteverwalter diese Einstellung ändern muss. Im gleichen Administrationsbereich legt der Verwalter auch fest ob mit diesem Gerät Objektkontrollen durchgeführt werden dürfen. Aktuell kann das Passwort für den gesicherten Administrationsbereich nicht geändert werden und ist fest im Quellcode definiert, es wäre außerdem Sinnvoll dem Verwalter zu ermöglichen das Kennwort zu ändern.
+
+Die ideale Lösung wäre eine Anmeldung zu implementieren, mit welcher dann der Nutzer klar authentifiziert wird, wenn zusätzlich auch ein Merkmal am Nutzer gespeichert wird ob dieser Objektkontrollen durchführen darf, dann kann das Administrationsmenü komplett entfallen. Mit dieser Implementierung würde auch der erhöhte Arbeitsaufwand für die Betreuung der Geräte durch den Geräteverwalter entfallen. Zusätzlich bringt es den Vorteil, dass die Geräte auch von Hausmeister zu Hausmeister weitergegeben werden können, ohne von Verwalter neu eingerichtet werden zu müssen.
 
 \section{Schreibanteile}
 \begin{itemize}
